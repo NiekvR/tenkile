@@ -1,0 +1,60 @@
+:host {
+  display: flex;
+  flex: 0 0 50px;
+  border-bottom: 1px solid #D5E974;
+  margin-bottom: 5px;
+  max-height: 0;
+  transition: max-height 250ms;
+  overflow: hidden;
+  flex-direction: column;
+
+  &.open {
+    max-height: 50px;
+  }
+
+  .options {
+    flex: 0 0 50px;
+    display: flex;
+    justify-content: center;
+    color: white;
+
+    .sub-options {
+      display: flex;
+      justify-content: flex-end;
+
+      &.todo-options {
+        flex: 0 0 250px
+      }
+
+      &.general-options {
+        flex: 0 0 100px;
+      }
+    }
+  }
+
+  .icon-container {
+    flex: 0 0 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+
+    .icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex: 0 0 25px;
+    }
+
+    span {
+      font-size: 8px;
+    }
+
+    &.active {
+      color: #D5E974;
+      transform: scale(1.3);
+    }
+  }
+}

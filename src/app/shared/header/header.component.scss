@@ -1,0 +1,20 @@
+:host {
+  flex: 0 0 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    .left-control, .right-control {
+      display: flex;
+      align-items: center;
+      color: #D5E974;
+      flex: 0 0 40px;
+    }
+  }
+}

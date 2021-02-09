@@ -1,0 +1,19 @@
+<div class="todo-container" [class.highlighted]="highlighted">
+  <div class="checkbox-container" (click)="checkTodo()">
+    <div class="checkbox" [class.checked]="todo.done">
+      <div class="gg-check" *ngIf="todo.done"></div>
+    </div>
+  </div>
+  <div class="task flex flex-grow align-items-center h-100" (click)="openTodo()" >
+    <span class="flex-grow text-truncate">{{ todo.task }}</span>
+    <div class="icon-container">
+      <div class="gg-calendar-two" *ngIf="!!todo.plannedDate"></div>
+    </div>
+    <div class="icon-container">
+      <div class="gg-tag" *ngIf="!!todo.tag" [style.color]="TodoTagColor[ todo.tag ]"></div>
+    </div>
+    <div class="icon-container">
+      <div class="gg-notes" *ngIf="!!todo.notes"></div>
+    </div>
+  </div>
+</div>

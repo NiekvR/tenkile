@@ -1,0 +1,11 @@
+<div class="flex align-items-center tag-container" [class.active]="active">
+  <div class="icon-container">
+    <div class="gg-website"></div>
+  </div>
+  <div class="task" *ngIf="user">
+    {{ user.name }}
+  </div>
+  <div class="not-selected" *ngIf="!user">
+    Select User...
+  </div>
+</div>

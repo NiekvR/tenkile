@@ -1,0 +1,43 @@
+<tkl-header title="Todo's">
+  <div class="control cursor-pointer flex" control="right" (click)="toggleListSelector()">
+    <div class="gg-chevron-down" *ngIf="!listSelectorOpen"></div>
+    <div class="gg-chevron-up" *ngIf="listSelectorOpen"></div>
+  </div>
+</tkl-header>
+<tkl-list-type-selector
+  [open]="listSelectorOpen"
+  [(activeListType)]="listType"
+  (activeListTypeChange)="setTodos($event)">
+</tkl-list-type-selector>
+<ng-container *ngIf="listType === ListType.Todos">
+  <tkl-todo-list [todos]="todosByDate" [sortable]="true"></tkl-todo-list>
+</ng-container>
+
+<ng-container *ngIf="listType === ListType.Planned">
+  <div class="calendar-container">
+    <tkl-calendar [(selectedDate)]="selectedDate" [collapsable]="true"></tkl-calendar>
+  </div>
+  <tkl-todo-list [todos]="todosForSelectedDate"></tkl-todo-list>
+</ng-container>
+
+<ng-container *ngIf="listType === ListType.Done">
+  <tkl-todo-list [todos]="todosDone"></tkl-todo-list>
+</ng-container>
+
+<ng-container *ngIf="listType === ListType.Tag">
+  <div *ngFor="let tag of TodoTag | enumToArray">
+    <ng-container *ngIf="!!todosByTag && todosByTag[ TodoTag[ tag ] ]?.length > 0">
+      <div class="flex justify-content-center tag-header" (click)="toggleTagTodo(TodoTag[ tag ])">
+        <h2 [style.color]="TodoTagColor[ tag ]">{{ TodoTagTitle[ TodoTag[ tag ] ] }}</h2>
+        <div class="gg-chevron-down" *ngIf="!tagOpen[ TodoTag[ tag ] ]"></div>
+        <div class="gg-chevron-up" *ngIf="tagOpen[ TodoTag[ tag ] ]"></div>
+      </div>
+      <tkl-todo-list *ngIf="tagOpen[ tag ]" [todos]="todosByTag[ TodoTag[ tag ] ]" group="todo-tag"></tkl-todo-list>
+    </ng-container>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="listType === ListType.Users">
+  <tkl-todo-list [todos]="todosByUser"></tkl-todo-list>
+</ng-container>
+<tkl-add-todo></tkl-add-todo>

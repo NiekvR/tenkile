@@ -1,0 +1,57 @@
+.background-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: url('../assets/backgrounds/1.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+
+  .container {
+    width: 100%;
+    height: 100%;
+    background: black;
+    position: relative;
+  }
+
+  .logo {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: black;
+
+    img {
+      width: 300px;
+      transition: opacity 1s ease-in-out;
+
+      &.overlay-img {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+
+      &.visible {
+        opacity: 1;
+      }
+    }
+  }
+
+  @media only screen and (min-height: 814px) {
+    .container {
+      height: 814px;
+    }
+  }
+
+  @media only screen and (min-width: 414px) {
+    .container {
+      width: 414px;
+    }
+  }
+}

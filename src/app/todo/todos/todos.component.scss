@@ -1,0 +1,24 @@
+:host {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .tag-header {
+    position: relative;
+    .gg-chevron-up, .gg-chevron-down {
+      position: absolute;
+      top: 7px;
+      right: 20px;
+      color: white;
+    }
+  }
+
+  .calendar-container {
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(#48494b, 0.75);
+    border-radius: 5px;
+    align-items: center;
+    margin: 15px;
+  }
+}

@@ -1,0 +1,19 @@
+<tkl-header title="Login">
+</tkl-header>
+
+<div class="flex flex-grow flex-column p-t-100">
+  <input placeholder="Username..." onfocus="this.placeholder = ''"
+         onblur="this.placeholder = 'Username...'"
+         [(ngModel)]="credentials.name">
+  <input type="password" placeholder="Password..." onfocus="this.placeholder = ''"
+         onblur="this.placeholder = 'Password...'"
+         [(ngModel)]="credentials.password">
+  <div *ngIf="error" class="text-center error p-b-15">
+    {{ this.error }}
+  </div>
+  <div class="flex justify-content-center">
+    <div class="login cursor-pointer" (click)="login()">
+      <div class="gg-log-off"></div>
+    </div>
+  </div>
+</div>

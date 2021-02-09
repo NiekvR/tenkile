@@ -1,0 +1,16 @@
+<div class="options">
+  <div class="sub-options todo-options">
+    <div class="icon-container" *ngFor="let listType of ListType | enumToArray"
+         [class.active]="activeListType === ListType[ listType ]" (click)="selectListType(ListType[ listType ])">
+      <div class="icon">
+        <div class="gg-check-r" *ngIf="ListType[ listType ] === ListType.Done"></div>
+        <div class="gg-list" *ngIf="ListType[ listType ] === ListType.Todos"></div>
+        <div class="gg-calendar-two" *ngIf="ListType[ listType ] === ListType.Planned"></div>
+        <div class="gg-album"  *ngIf="ListType[ listType ] === ListType.Tag"></div>
+        <div class="gg-website"  *ngIf="ListType[ listType ] === ListType.Users"></div>
+      </div>
+      <span *ngIf="ListType[ listType ] !== ListType.Users">{{ ListType[ listType ] }}</span>
+      <span *ngIf="ListType[ listType ] === ListType.Users && user">{{ user.name }}</span>
+    </div>
+  </div>
+</div>

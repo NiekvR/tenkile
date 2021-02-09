@@ -1,0 +1,58 @@
+:host {
+  margin: 2px 0;
+  flex: 0 0 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+  cursor: pointer;
+
+  .todo-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    background-color: #48494b;
+    border-radius: 5px;
+    align-items: center;
+
+    &.highlighted {
+      background: none;
+
+      .task {
+        font-weight: bold;
+      }
+    }
+
+    .checkbox-container {
+      flex: 0 0 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .checkbox {
+        flex: 0 0 24px;
+        height: 24px;
+        border: 2px solid white;
+        border-radius: 50%;
+
+        &.checked {
+          background-color: white;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+    }
+
+    .task {
+      color: #fff;
+
+      .icon-container {
+        flex: 0 0 36px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+      }
+    }
+  }
+}

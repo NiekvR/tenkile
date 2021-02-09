@@ -1,0 +1,87 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .selected-date {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 0 0 50px;
+    color: #fff;
+    text-transform: capitalize;
+    cursor: pointer;
+  }
+
+  .calendar {
+    flex: 0 0 211px;
+    max-height: 211px;
+    transition: max-height 250ms;
+
+    &.collapsed {
+      max-height: 0;
+      overflow: hidden;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #D5E974;
+
+      h1 {
+        font-size: 20px;
+      }
+    }
+
+    .calendars {
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+      height: 181px;
+
+      .calendar {
+        display: flex;
+        flex-direction: row;
+        color: #D5E974;
+        justify-content: space-between;
+        border-top: 1px solid #636466;
+        margin-top: 5px;
+        flex: 0 0 100%;
+        transition: transform 250ms;
+        position: absolute;
+        width: 100%;
+
+        .day-column {
+          flex: 0 0 14%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          .cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 30px;
+            width: 30px;
+
+            &.date {
+              color: white;
+              cursor: pointer;
+
+              &.active {
+                color: #000000;
+                background: #D5E974;
+                border-radius: 50%;
+              }
+            }
+
+            &.disabled {
+              color: #636466;
+            }
+          }
+        }
+      }
+    }
+  }
+}

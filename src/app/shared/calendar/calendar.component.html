@@ -1,0 +1,30 @@
+<div class="flex flex-column text-center selected-date" (click)="openCalendar()" *ngIf="collapsable">
+  {{ selectedDate | date:'EEEE d MMMM y' }}
+</div>
+
+<div class="calendar" [class.collapsed]="collapsable && collapsed">
+  <div class="header">
+    <div (click)="back()" class="gg-chevron-left m-l-15 cursor-pointer"></div>
+    <h1 class="text-capitalize">{{ calendar[slide].monthLabel }} {{ calendar[slide].year }}</h1>
+    <div (click)="next()" class="gg-chevron-right m-r-15 cursor-pointer"></div>
+  </div>
+  <div class="calendars" [style.height]="height">
+    <div *ngFor="let month of calendar | objectToArray"
+         [style.height]="height"
+         [class]="month.monthLabel"
+         [style.transform]="'translate(' + (month.index - slide) * 100 + '%)'"
+         (swipeleft)="next()"
+         (swiperight)="back()"
+         class="calendar">
+      <div *ngFor="let dayColumn of month.dayColumns | enumToArray" class="day-column">
+        <div class="cell">{{ month.dayColumns[dayColumn].day }}</div>
+        <div (click)="selectDate(date)" *ngFor="let date of month.dayColumns[ dayColumn ].dates"
+             [class.active]="isSelected(date)"
+             [class.disabled]="month.month !== date.getMonth()"
+             class="cell date">
+          {{ date.getDate() }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,81 @@
+<div class="add-button" *ngIf="!editing && !update" (click)="toggleEditing()">
+  <div class="todo-container">
+    <div class="icon-container">
+      <div class="gg-math-plus"></div>
+    </div>
+    <div class="task">
+      Todo toevoegen
+    </div>
+  </div>
+</div>
+<div class="add-container" *ngIf="editing">
+  <div class="todo-container" *ngIf="activeOption === 'text'">
+    <div class="icon-container">
+      <div class="checkbox"></div>
+    </div>
+    <div class="task">
+      <input [(ngModel)]="todo.task" [placeholder]="'Todo toevoegen...'">
+    </div>
+  </div>
+  <div class="todo-container" *ngIf="activeOption === 'tag'">
+    <div class="flex flex-column w-100">
+      <tkl-tag *ngFor="let tag of Tag | enumToArray"
+               [tag]="tag"
+               [active]="Tag[ tag ] === todo.tag"
+               (click)="setActiveTag(Tag[ tag ])"></tkl-tag>
+    </div>
+  </div>
+  <div class="todo-container" *ngIf="activeOption === 'date'">
+    <tkl-calendar [(selectedDate)]="todo.plannedDate"></tkl-calendar>
+  </div>
+  <div class="todo-container" *ngIf="activeOption === 'note'">
+    <div class="task w-100">
+      <textarea [(ngModel)]="todo.notes" [placeholder]="'Notitie toevoegen...'"></textarea>
+    </div>
+  </div>
+  <div class="todo-container" *ngIf="activeOption === 'user'">
+    <div class="flex flex-column w-100">
+      <tkl-user *ngFor="let user of USERS | objectToArray"
+                [user]="user"
+                [active]="user.id === todo.user"
+                (click)="setUser(user)">
+      </tkl-user>
+    </div>
+  </div>
+  <div class="options">
+    <div class="sub-options todo-options">
+      <div class="icon-container"
+           [class.active]="activeOption === 'text'" (click)="selectOption('text')">
+        <div class="gg-format-text"></div>
+      </div>
+      <div class="icon-container"
+           [class.active]="activeOption === 'tag'" (click)="selectOption('tag')">
+        <div class="gg-tag"></div>
+      </div>
+      <div class="icon-container"
+           [class.active]="activeOption === 'date'" (click)="selectOption('date')">
+        <div class="gg-calendar"></div>
+      </div>
+      <div class="icon-container"
+           [class.active]="activeOption === 'note'" (click)="selectOption('note')">
+        <div class="gg-notes"></div>
+      </div>
+      <div class="icon-container"
+           [class.active]="activeOption === 'user'" (click)="selectOption('user')">
+        <div class="gg-website"></div>
+      </div>
+    </div>
+    <div class="sub-options general-options">
+      <div class="icon-container" (click)="toggleEditing()">
+        <div class="gg-close error"></div>
+      </div>
+      <div class="icon-container" *ngIf="!!todo.task && !update" (click)="addTodo()">
+        <div class="gg-math-plus"></div>
+      </div>
+      <div class="icon-container" *ngIf="!!todo.task && update" (click)="addTodo()">
+        <div class="gg-check"></div>
+      </div>
+    </div>
+  </div>
+</div>
+

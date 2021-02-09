@@ -1,0 +1,25 @@
+:host {
+  cursor: pointer;
+  .tag-container {
+    border-radius: 10px;
+    color: white;
+
+    &.active {
+      background-color: #D5E974;
+      color: black;
+
+      .icon-container {
+        color: black;
+      }
+    }
+  }
+
+  .icon-container {
+    flex: 0 0 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+  }
+}

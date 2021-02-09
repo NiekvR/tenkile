@@ -1,0 +1,33 @@
+<tkl-header>
+  <div class="control cursor-pointer" control="left" (click)="backTodos()">
+    <div class="gg-chevron-left"></div>
+    Todo's
+  </div>
+</tkl-header>
+<div class="flex flex-column m-15" *ngIf="todo">
+  <tkl-todo [todo]="todo" [highlighted]="true" (click)="updateTodo('text')"></tkl-todo>
+  <tkl-tag [tag]="todo.tag" (click)="updateTodo('tag')"></tkl-tag>
+  <tkl-user [user]="USERS[ todo.user ]" (click)="updateTodo('user')"></tkl-user>
+  <div class="date flex align-items-center cursor-pointer" (click)="updateTodo('date')">
+    <div class="icon-container">
+      <div class="gg-calendar"></div>
+    </div>
+    <span *ngIf="todo.plannedDate">
+      {{ todo.plannedDate | date:'EEEE d MMMM y' }}
+    </span>
+    <span class="not-selected" *ngIf="!todo.plannedDate">Select date...</span>
+  </div>
+  <div class="notes flex cursor-pointer" [class.align-items-center]="!todo.notes" (click)="updateTodo('note')">
+    <div class="icon-container">
+      <div class="gg-notes"></div>
+    </div>
+    <div *ngIf="todo.notes">
+      {{ todo.notes }}
+    </div>
+    <div class="not-selected" *ngIf="!todo.notes">
+      Notes...
+    </div>
+  </div>
+</div>
+
+<tkl-add-todo [todo]="todo" [(editing)]="editing" [update]="true" [activeOption]="activeOption"></tkl-add-todo>

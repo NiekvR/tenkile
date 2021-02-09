@@ -1,0 +1,12 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  padding: 0 15px;
+
+  .no-todos {
+    color: white;
+    font-size: 12px;
+    padding-top: 15px;
+    text-align: center;
+  }
+}

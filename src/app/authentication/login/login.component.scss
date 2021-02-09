@@ -1,0 +1,46 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  input {
+    margin: 15px;
+    background: none;
+    border: #D5E974 1px solid;
+    color: white;
+    border-radius: 20px;
+    padding: 5px 15px;
+    text-align: center;
+    font-size: 20px;
+
+    &:focus {
+      color: black;
+      outline-width: 0;
+      background-color: #D5E974;
+    }
+
+    &::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+      color: white;
+      opacity: .8; /* Firefox */
+    }
+  }
+
+  .login {
+    flex: 0 0 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    background-color: #D5E974;
+    border-radius: 50%;
+    animation-name: color;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+  }
+}
+
+@keyframes color {
+  0%   {color:black;}
+  50%  {color:red;}
+  100% {color:black;}
+}

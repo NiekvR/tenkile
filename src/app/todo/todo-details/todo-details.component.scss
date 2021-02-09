@@ -1,0 +1,24 @@
+:host {
+  display: flex;
+  flex-direction: column;
+
+  .control {
+    display: flex;
+    align-items: center;
+    color: #D5E974;
+    flex: 0 0 80px;
+  }
+
+  .date, .notes {
+    color: white;
+
+    .icon-container {
+      flex: 0 0 50px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+    }
+  }
+}

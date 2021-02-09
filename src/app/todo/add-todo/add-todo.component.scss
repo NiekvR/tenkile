@@ -1,0 +1,97 @@
+:host {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+  cursor: pointer;
+
+  .add-button {
+    height: 80px;
+    display: flex;
+    flex: 0 0 100%;
+    padding: 15px;
+  }
+
+  .add-container {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px 10px 0 0;
+    background-color: #48494b;
+    width: 100%;
+
+    .options {
+      flex: 0 0 50px;
+      display: flex;
+      justify-content: space-between;
+
+      .sub-options {
+        display: flex;
+        justify-content: flex-end;
+
+        &.todo-options {
+          flex: 0 0 250px
+        }
+
+        &.general-options {
+          flex: 0 0 100px;
+        }
+      }
+    }
+  }
+
+  .todo-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    background-color: rgba(#48494b, 0.75);
+    border-radius: 5px;
+    align-items: center;
+
+    .task {
+      margin-top: -4px;
+      color: #fff;
+
+      input, textarea {
+        width: 100%;
+        font-family: 'Lato', sans-serif;
+        font-size: 16px;
+        background: none;
+        border: none;
+        color: white;
+
+        &:focus {
+          outline-width: 0;
+        }
+      }
+
+      textarea {
+        height: 100px;
+        resize: none;
+        border: 1px solid #636466;
+      }
+    }
+  }
+
+  .icon-container {
+    flex: 0 0 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+
+    &.active {
+      color: #D5E974;
+    }
+
+    .checkbox {
+      flex: 0 0 24px;
+      height: 24px;
+      border: 2px solid white;
+      border-radius: 50%;
+    }
+  }
+}
