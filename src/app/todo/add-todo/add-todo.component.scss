@@ -53,6 +53,14 @@
     .task {
       margin-top: -4px;
       color: #fff;
+      flex: 1 1 0;
+
+      input[type=text] {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        outline: none;
+      }
 
       input, textarea {
         width: 100%;
