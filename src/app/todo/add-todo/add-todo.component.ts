@@ -41,7 +41,7 @@ export class AddTodoComponent implements OnInit {
   public toggleEditing(): void {
     this.editing = !this.editing;
     if (this.editing) {
-      requestAnimationFrame(() => this.focusOnInput());
+      setTimeout(() => this.focusOnInput(), 0);
     } else {
       this.clearAddTodo();
     }
