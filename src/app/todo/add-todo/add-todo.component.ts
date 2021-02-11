@@ -76,9 +76,12 @@ export class AddTodoComponent implements OnInit {
     this.todo.user = user.id;
   }
 
+  public onFocus(): void {
+    setTimeout(() => window.scroll(0, 0), 0);
+  }
+
   private focusOnInput(): void {
     this.el.nativeElement.querySelector('input').focus();
-    window.scroll(0, 0);
   }
 
   private clearAddTodo(): void {

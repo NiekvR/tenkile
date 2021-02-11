@@ -14,7 +14,7 @@
       <div class="checkbox"></div>
     </div>
     <div class="task">
-      <input [(ngModel)]="todo.task" [placeholder]="'Todo toevoegen...'">
+      <input [(ngModel)]="todo.task" [placeholder]="'Todo toevoegen...'" (focus)="onFocus()">
     </div>
   </div>
   <div class="todo-container" *ngIf="activeOption === 'tag'">
@@ -30,7 +30,7 @@
   </div>
   <div class="todo-container" *ngIf="activeOption === 'note'">
     <div class="task w-100">
-      <textarea [(ngModel)]="todo.notes" [placeholder]="'Notitie toevoegen...'"></textarea>
+      <textarea [(ngModel)]="todo.notes" [placeholder]="'Notitie toevoegen...'" (focus)="onFocus()"></textarea>
     </div>
   </div>
   <div class="todo-container" *ngIf="activeOption === 'user'">
