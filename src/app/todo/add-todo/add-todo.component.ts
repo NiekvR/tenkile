@@ -22,6 +22,7 @@ export class AddTodoComponent implements OnInit {
 
   public Tag = TodoTag;
   public USERS = USERS;
+  private focus = true;
 
   constructor(private el: ElementRef, private todoService: TodoService, public auth: AngularFireAuth) { }
 
@@ -41,7 +42,7 @@ export class AddTodoComponent implements OnInit {
   public toggleEditing(): void {
     this.editing = !this.editing;
     if (this.editing) {
-      setTimeout(() => this.focusOnInput(), 0);
+      setTimeout(() => this.onFocus(), 0);
     } else {
       this.clearAddTodo();
     }
@@ -76,12 +77,12 @@ export class AddTodoComponent implements OnInit {
     this.todo.user = user.id;
   }
 
-  public onFocus(): void {
-    setTimeout(() => window.scroll(0, 0), 0);
-  }
+  // public onFocus(): void {
+  //   setTimeout(() => window.scroll(0, 0), 0);
+  // }
 
-  private focusOnInput(): void {
-    this.el.nativeElement.querySelector('input').focus();
+  public onFocus(): void {
+    this.focusAndOpenKeyboard(this.el.nativeElement.querySelector('input'));
   }
 
   private clearAddTodo(): void {
@@ -94,5 +95,34 @@ export class AddTodoComponent implements OnInit {
         order
       });
     this.selectOption('text');
+  }
+
+  private focusAndOpenKeyboard(el): void {
+    const timeout = 100;
+    if (el && this.focus) {
+      // Align temp input element approximately where the input element is
+      // so the cursor doesn't jump around
+      const tempEl = document.createElement('input');
+      tempEl.style.position = 'absolute';
+      tempEl.style.top = (el.offsetTop + 7) + 'px';
+      tempEl.style.left = el.offsetLeft + 'px';
+
+      // @ts-ignore
+      tempEl.style.height = 0;
+      // @ts-ignore
+      tempEl.style.opacity = 0;
+      // Put this temp element as a child of the page <body> and focus on it
+      document.body.appendChild(tempEl);
+      tempEl.focus();
+
+      // The keyboard is open. Now do a delayed focus on the target element
+      setTimeout(() => {
+        el.focus();
+        el.click();
+        this.focus = false;
+        // Remove the temp element
+        document.body.removeChild(tempEl);
+      }, timeout);
+    }
   }
 }

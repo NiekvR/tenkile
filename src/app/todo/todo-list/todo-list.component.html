@@ -1,7 +1,7 @@
-<div *ngIf="todos.length > 0 && sortable" class="flex flex-column" [sortablejs]="todos" [sortablejsOptions]="options">
+<div *ngIf="todos.length > 0 && sortable" class="flex flex-column overflow-auto" [sortablejs]="todos" [sortablejsOptions]="options">
   <tkl-todo *ngFor="let todo of todos" [todo]="todo"></tkl-todo>
 </div>
-<div *ngIf="todos.length > 0 && !sortable" class="flex flex-column">
+<div *ngIf="todos.length > 0 && !sortable" class="flex flex-column overflow-auto">
   <tkl-todo *ngFor="let todo of todos" [todo]="todo"></tkl-todo>
 </div>
 <div *ngIf="todos.length === 0" class="no-todos">

@@ -23,9 +23,11 @@ export class TodosComponent implements OnInit, OnDestroy {
   public todosByUser: Todo[] = [];
   public todosByTag: { [ tag: string ]: Todo[] };
 
+  public datesWithTodos: Date[] = [];
+
   public listSelectorOpen = true;
   public sortAscending = true;
-  public listType = ListType.Todos;
+  public listType = ListType.Planned;
   public ListType = ListType;
   public TodoTag = TodoTag;
   public TodoTagTitle = TodoTagTitle;
@@ -86,8 +88,12 @@ export class TodosComponent implements OnInit, OnDestroy {
     this.todoSubscription = this.todoService.getTodos()
       .pipe(
         tap(todos => this.todosByDate = todos),
+        tap(todos => this.datesWithTodos = this.getDatesWithTodos(todos)),
         map(todos => this.filterPlannedOnDate(todos)))
-      .subscribe(todosByDate => this.todosForSelectedDate = todosByDate);
+      .subscribe(todosByDate => {
+        console.log(this.datesWithTodos);
+        this.todosForSelectedDate = todosByDate
+      });
   }
 
   private setTodosDone(): void {
@@ -105,13 +111,14 @@ export class TodosComponent implements OnInit, OnDestroy {
       .subscribe(todosByUser => this.todosByUser = todosByUser);
   }
 
-  private sortTodos(todos: Todo[], property = 'date'): Todo[] {
-    return todos.sort((a, b) => this.sortAscending ?
-      !a[ property ] ? 1 : !b[ property ] ? -1 : new Date(b[ property ]).getTime() - new Date(a[ property ]).getTime() :
-      !b[ property ] ? 1 : !a[ property ] ? -1 : new Date(a[ property ]).getTime() - new Date(b[ property ]).getTime());
-  }
-
   private filterPlannedOnDate(todos: Todo[]): Todo[] {
     return todos.filter(todo => !!todo.plannedDate && this.dateService.isSameDay(todo.plannedDate, this.selectedDate));
+  }
+
+  private getDatesWithTodos(todos: Todo[]): Date[] {
+    const dates = todos.filter(todo => !!todo.plannedDate).map(todo => todo.plannedDate);
+    return dates
+      .filter((date, index) =>
+        dates.findIndex(selfValue => this.dateService.isSameDay(date, selfValue)) === index);
   }
 }

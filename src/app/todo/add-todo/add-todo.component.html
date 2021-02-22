@@ -13,8 +13,8 @@
     <div class="icon-container">
       <div class="checkbox"></div>
     </div>
-    <div class="task">
-      <input [(ngModel)]="todo.task" [placeholder]="'Todo toevoegen...'" (focus)="onFocus()">
+    <div class="task" (click)="onFocus()">
+      <input [(ngModel)]="todo.task" [placeholder]="'Todo toevoegen...'">
     </div>
   </div>
   <div class="todo-container" *ngIf="activeOption === 'tag'">

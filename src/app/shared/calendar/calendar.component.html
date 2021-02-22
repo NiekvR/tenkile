@@ -2,15 +2,18 @@
   {{ selectedDate | date:'EEEE d MMMM y' }}
 </div>
 
-<div class="calendar" [class.collapsed]="collapsable && collapsed">
+<div class="calendar"
+     [class.collapsed]="collapsable && collapsed"
+     [style.maxHeight.px]="height + 55"
+     [style.flex]="'0 0 ' + (height + 55) + 'px'">
   <div class="header">
     <div (click)="back()" class="gg-chevron-left m-l-15 cursor-pointer"></div>
     <h1 class="text-capitalize">{{ calendar[slide].monthLabel }} {{ calendar[slide].year }}</h1>
     <div (click)="next()" class="gg-chevron-right m-r-15 cursor-pointer"></div>
   </div>
-  <div class="calendars" [style.height]="height">
+  <div class="calendars" [style.flex]="'0 0 ' + (height + 5) + 'px'">
     <div *ngFor="let month of calendar | objectToArray"
-         [style.height]="height"
+         [style.flex]="'0 0 ' + height + 'px'"
          [class]="month.monthLabel"
          [style.transform]="'translate(' + (month.index - slide) * 100 + '%)'"
          (swipeleft)="next()"
@@ -20,9 +23,11 @@
         <div class="cell">{{ month.dayColumns[dayColumn].day }}</div>
         <div (click)="selectDate(date)" *ngFor="let date of month.dayColumns[ dayColumn ].dates"
              [class.active]="isSelected(date)"
+             [class.today]="isToday(date)"
              [class.disabled]="month.month !== date.getMonth()"
              class="cell date">
           {{ date.getDate() }}
+          <span *ngIf="hasTodo(date)" class="dot"></span>
         </div>
       </div>
     </div>

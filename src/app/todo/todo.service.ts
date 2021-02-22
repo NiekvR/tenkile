@@ -60,12 +60,16 @@ export class TodoService implements OnDestroy {
 
   public getTodosByTag(): Observable<{ [ tag: string ]: Todo[] }> {
     return this.getTodos$()
-      .pipe(map(todos => this.sortTodosOnTags(todos)));
+      .pipe(
+        map(todos => todos.filter(todo => !todo.done)),
+        map(todos => this.sortTodosOnTags(todos)));
   }
 
   public getTodosByUser(): Observable<Todo[]> {
     return this.getAllTodos$()
-      .pipe(switchMap(todos => this.filterTodosOfCurrentUser(todos)));
+      .pipe(
+        map(todos => todos.filter(todo => !todo.done)),
+        switchMap(todos => this.filterTodosOfCurrentUser(todos)));
   }
 
   public getTodos(): Observable<Todo[]> {

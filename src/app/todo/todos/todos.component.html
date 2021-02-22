@@ -13,18 +13,21 @@
   <tkl-todo-list [todos]="todosByDate" [sortable]="true"></tkl-todo-list>
 </ng-container>
 
-<ng-container *ngIf="listType === ListType.Planned">
+<div *ngIf="listType === ListType.Planned" class="flex flex-column flex-grow overflow-auto">
   <div class="calendar-container">
-    <tkl-calendar [(selectedDate)]="selectedDate" [collapsable]="true"></tkl-calendar>
+    <tkl-calendar [(selectedDate)]="selectedDate"
+                  (selectedDateChange)="setTodos(ListType.Planned)"
+                  [datesWithTodo]="datesWithTodos"
+                  [collapsable]="true"></tkl-calendar>
   </div>
   <tkl-todo-list [todos]="todosForSelectedDate"></tkl-todo-list>
-</ng-container>
+</div>
 
 <ng-container *ngIf="listType === ListType.Done">
   <tkl-todo-list [todos]="todosDone"></tkl-todo-list>
 </ng-container>
 
-<ng-container *ngIf="listType === ListType.Tag">
+<div *ngIf="listType === ListType.Tag" class="flex flex-column flex-grow overflow-auto">
   <div *ngFor="let tag of TodoTag | enumToArray">
     <ng-container *ngIf="!!todosByTag && todosByTag[ TodoTag[ tag ] ]?.length > 0">
       <div class="flex justify-content-center tag-header" (click)="toggleTagTodo(TodoTag[ tag ])">
@@ -35,7 +38,7 @@
       <tkl-todo-list *ngIf="tagOpen[ tag ]" [todos]="todosByTag[ TodoTag[ tag ] ]" group="todo-tag"></tkl-todo-list>
     </ng-container>
   </div>
-</ng-container>
+</div>
 
 <ng-container *ngIf="listType === ListType.Users">
   <tkl-todo-list [todos]="todosByUser"></tkl-todo-list>

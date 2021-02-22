@@ -12,12 +12,13 @@ import { DateService } from '../date/date.service';
 export class CalendarComponent implements OnInit {
   @Input() selectedDate: Date;
   @Input() collapsable = false;
+  @Input() datesWithTodo: Date[] = [];
   @Output() selectedDateChange = new EventEmitter<Date>();
 
   public startDate: Date;
   public calendar: Calendar;
   public slide = 0;
-  public height: string;
+  public height: number;
 
   public collapsed = false;
 
@@ -55,15 +56,23 @@ export class CalendarComponent implements OnInit {
   }
 
   public isSelected(date: Date): boolean {
-    return this.dateService.isSame(this.selectedDate, date);
+    return this.dateService.isSameDay(this.selectedDate, date);
+  }
+
+  public isToday(date: Date): boolean {
+    return this.dateService.isSameDay(new Date(), date);
   }
 
   public openCalendar(): void {
     this.collapsed = !this.collapsed;
   }
 
+  public hasTodo(date: Date): boolean {
+    return this.datesWithTodo.findIndex(dateWithTodo => this.dateService.isSameDay(dateWithTodo, date)) > -1;
+  }
+
   private getHeightForMonth(): void {
-    this.height = `${(this.calendar[ this.slide ].dayColumns[ 0 ].dates.length + 1) * 30 + 5}px`;
+    this.height = (this.calendar[ this.slide ].dayColumns[ 0 ].dates.length + 1) * 30 + 10;
     console.log(this.height);
   }
 }
