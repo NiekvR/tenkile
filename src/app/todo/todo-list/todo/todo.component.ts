@@ -27,4 +27,8 @@ export class TodoComponent {
     this.todoService.addTodo(this.todo);
   }
 
+  public removeTodo(): void {
+    this.todoService.removeTodo(this.todo);
+  }
+
 }

@@ -15,6 +15,7 @@ export class ListTypeSelectorComponent implements OnInit {
   public ListType = ListType;
 
   @Input() @HostBinding('class.open') open = false;
+  @Input() @HostBinding('class.selected') onlyShowSelected = false;
   @Input() activeListType = ListType.Todos;
   @Output() activeListTypeChange = new EventEmitter<ListType>();
 
@@ -29,7 +30,7 @@ export class ListTypeSelectorComponent implements OnInit {
   }
 
   public selectListType(listType: ListType): void {
-    if (this.activeListType !== listType) {
+    if (this.activeListType !== listType && !this.onlyShowSelected) {
       this.activeListType = listType;
       this.activeListTypeChange.emit(this.activeListType);
     }

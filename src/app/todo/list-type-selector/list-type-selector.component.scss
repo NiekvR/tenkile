@@ -12,6 +12,20 @@
     max-height: 50px;
   }
 
+  &.selected {
+    border-bottom: none;
+    margin-bottom: 0;
+
+    .options {
+      .sub-options {
+        flex: 0 0 50px;
+      }
+    }
+    .icon-container {
+      cursor: auto;
+    }
+  }
+
   .options {
     flex: 0 0 50px;
     display: flex;
@@ -40,6 +54,7 @@
     align-items: center;
     flex-direction: column;
     color: white;
+    cursor: pointer;
 
     .icon {
       display: flex;

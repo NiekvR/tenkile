@@ -5,12 +5,17 @@ import { filter, map, switchMap, take } from 'rxjs/operators';
 import { TodoTag } from '../models/enums/todo-tag.enum';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { ListType } from '../models/enums/list-type.enum';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class TodoService implements OnDestroy {
   private collection: AngularFirestoreCollection<Todo>;
 
   private todos$ = new BehaviorSubject<Todo[]>(null);
+  private state$ = new BehaviorSubject<ListType>(ListType.Todos);
+  private date$ = new BehaviorSubject<Date>(new Date());
 
   public nextOrder = new BehaviorSubject<number>(0);
 
@@ -23,6 +28,10 @@ export class TodoService implements OnDestroy {
   ngOnDestroy(): void {
     this.todos$.complete();
     this.todos$ = null;
+    this.state$.complete();
+    this.state$ = null;
+    this.date$.complete();
+    this.date$ = null;
   }
 
   public initTodos(): void {
@@ -35,6 +44,22 @@ export class TodoService implements OnDestroy {
           return item;
         })))
       .subscribe(todos => this.todos$.next(todos));
+  }
+
+  public setTodoListState(state: ListType): void {
+    this.state$.next(state);
+  }
+
+  public getTodoListState(): Observable<ListType> {
+    return this.state$.asObservable();
+  }
+
+  public setCurrentDate(date: Date): void {
+    this.date$.next(date);
+  }
+
+  public getCurrentDate(): Observable<Date> {
+    return this.date$.asObservable();
   }
 
   public getTodos$(): Observable<Todo[]> {
@@ -59,10 +84,8 @@ export class TodoService implements OnDestroy {
   }
 
   public getTodosByTag(): Observable<{ [ tag: string ]: Todo[] }> {
-    return this.getTodos$()
-      .pipe(
-        map(todos => todos.filter(todo => !todo.done)),
-        map(todos => this.sortTodosOnTags(todos)));
+    return this.getTodos()
+      .pipe(map(todos => this.sortTodosOnTags(todos)));
   }
 
   public getTodosByUser(): Observable<Todo[]> {
@@ -95,6 +118,10 @@ export class TodoService implements OnDestroy {
     });
 
     return from(batch.commit());
+  }
+
+  public removeTodo(todo: Todo): void {
+    this.collection.doc(todo.id).delete();
   }
 
   private add(item: Todo): Observable<Todo> {

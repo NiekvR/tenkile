@@ -12,8 +12,7 @@ import { DateService } from '../../shared/date/date.service';
 @Component({
   selector: 'tkl-todos',
   templateUrl: './todos.component.html',
-  styleUrls: ['./todos.component.scss'],
-  providers: [ TodoService ]
+  styleUrls: ['./todos.component.scss']
 })
 export class TodosComponent implements OnInit, OnDestroy {
 
@@ -27,7 +26,7 @@ export class TodosComponent implements OnInit, OnDestroy {
 
   public listSelectorOpen = true;
   public sortAscending = true;
-  public listType = ListType.Planned;
+  public listType: ListType;
   public ListType = ListType;
   public TodoTag = TodoTag;
   public TodoTagTitle = TodoTagTitle;
@@ -42,11 +41,13 @@ export class TodosComponent implements OnInit, OnDestroy {
   public selectedDate = new Date();
 
   private todoSubscription: Subscription;
+  private subscriptions: Subscription[] = [];
 
   constructor(private todoService: TodoService, private dateService: DateService) { }
 
   ngOnInit(): void {
-    this.setTodos(this.listType);
+    this.getListType();
+    this.getSelectedDate();
   }
 
   ngOnDestroy(): void {
@@ -54,19 +55,43 @@ export class TodosComponent implements OnInit, OnDestroy {
       this.todoSubscription.unsubscribe();
       this.todoSubscription = null;
     }
+
+    this.subscriptions.forEach(subscription => {
+      subscription.unsubscribe();
+    });
+  }
+
+  public getListType(): void {
+    this.subscriptions.push(this.todoService.getTodoListState()
+      .pipe(tap(listType => this.listType = listType))
+      .subscribe(() => this.setTodos()));
+  }
+
+  public getSelectedDate(): void {
+    this.subscriptions.push(this.todoService.getCurrentDate()
+      .pipe(tap(date => this.selectedDate = date))
+      .subscribe(() => this.setTodos()));
   }
 
   public toggleListSelector(): void {
     this.listSelectorOpen = !this.listSelectorOpen;
   }
 
-  public setTodos(listType: ListType): void {
+  public setSelectedDate(date: Date): void {
+    this.todoService.setCurrentDate(date);
+    this.setListType(ListType.Planned)
+  }
+
+  public setListType(listType: ListType): void {
+    this.todoService.setTodoListState(listType);
+  }
+
+  public setTodos(): void {
     if (!!this.todoSubscription) {
       this.todoSubscription.unsubscribe();
       this.todoSubscription = null;
     }
-    this.listType = listType;
-    switch (listType) {
+    switch (this.listType) {
       case ListType.Todos: this.setTodosByDateAdded(); break;
       case ListType.Planned: this.setTodosByDatePlanned(); break;
       case ListType.Done: this.setTodosDone(); break;
@@ -90,10 +115,7 @@ export class TodosComponent implements OnInit, OnDestroy {
         tap(todos => this.todosByDate = todos),
         tap(todos => this.datesWithTodos = this.getDatesWithTodos(todos)),
         map(todos => this.filterPlannedOnDate(todos)))
-      .subscribe(todosByDate => {
-        console.log(this.datesWithTodos);
-        this.todosForSelectedDate = todosByDate
-      });
+      .subscribe(todosByDate => this.todosForSelectedDate = todosByDate);
   }
 
   private setTodosDone(): void {

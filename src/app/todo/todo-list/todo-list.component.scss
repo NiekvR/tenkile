@@ -6,6 +6,10 @@
   margin-bottom: 70px;
   flex: 1 0 50px;
 
+  &.no-margin {
+    margin-bottom: 0;
+  }
+
   .no-todos {
     color: white;
     font-size: 12px;

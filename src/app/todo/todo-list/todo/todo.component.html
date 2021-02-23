@@ -4,16 +4,21 @@
       <div class="gg-check" *ngIf="todo.done"></div>
     </div>
   </div>
-  <div class="task flex flex-grow align-items-center h-100" (click)="openTodo()" >
-    <span class="flex-grow text-truncate">{{ todo.task }}</span>
-    <div class="icon-container">
-      <div class="gg-calendar-two" *ngIf="!!todo.plannedDate"></div>
-    </div>
-    <div class="icon-container">
-      <div class="gg-tag" *ngIf="!!todo.tag" [style.color]="TodoTagColor[ todo.tag ]"></div>
-    </div>
-    <div class="icon-container">
-      <div class="gg-notes" *ngIf="!!todo.notes"></div>
+  <div class="task flex flex-grow align-items-center h-100">
+    <span class="flex-grow text-truncate" (click)="openTodo()">{{ todo.task }}</span>
+    <ng-container *ngIf="!todo.done">
+      <div class="icon-container" (click)="openTodo()">
+        <div class="gg-calendar-two" *ngIf="!!todo.plannedDate"></div>
+      </div>
+      <div class="icon-container" (click)="openTodo()">
+        <div class="gg-tag" *ngIf="!!todo.tag" [style.color]="TodoTagColor[ todo.tag ]"></div>
+      </div>
+      <div class="icon-container" (click)="openTodo()">
+        <div class="gg-notes" *ngIf="!!todo.notes"></div>
+      </div>
+    </ng-container>
+    <div class="icon-container" *ngIf="todo.done" (click)="removeTodo()">
+      <div class="gg-remove"></div>
     </div>
   </div>
 </div>

@@ -14,6 +14,7 @@ import localeNl from '@angular/common/locales/nl';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AuthenticationModule } from './authentication/authentication.module';
+import { TodoService } from './todo/todo.service';
 
 registerLocaleData(localeNl);
 
@@ -32,7 +33,10 @@ registerLocaleData(localeNl);
     AngularFirestoreModule,
     AuthenticationModule
   ],
-  providers: [{ provide: LOCALE_ID, useValue: 'nl' }],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'nl' },
+    TodoService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
