@@ -7,6 +7,7 @@ import { TodoComponent } from './todo-list/todo/todo.component';
 import { AddTodoComponent } from './add-todo/add-todo.component';
 import { TodoDetailsComponent } from './todo-details/todo-details.component';
 import { ListTypeSelectorComponent } from './list-type-selector/list-type-selector.component';
+import { SettingsComponent } from './settings/settings.component';
 
 
 
@@ -17,7 +18,8 @@ import { ListTypeSelectorComponent } from './list-type-selector/list-type-select
     TodoComponent,
     AddTodoComponent,
     TodoDetailsComponent,
-    ListTypeSelectorComponent
+    ListTypeSelectorComponent,
+    SettingsComponent
   ],
   imports: [
     CommonModule,

@@ -17,6 +17,10 @@
   [activeListType]="listType"
   (activeListTypeChange)="setListType($event)">
 </tkl-list-type-selector>
+<div class="edit" *ngIf="listSelectorOpen" (click)="openSettings()">
+  <div class="gg-edit-markup"></div>
+  <span>Settings</span>
+</div>
 <ng-container *ngIf="listType === ListType.Todos">
   <tkl-todo-list [todos]="todosByDate" [sortable]="true"></tkl-todo-list>
 </ng-container>
@@ -32,18 +36,19 @@
 </div>
 
 <ng-container *ngIf="listType === ListType.Done">
+  <span class="delete" (click)="deleteALlDoneTodos(todosDone)">Delete all <div class="gg-remove m-l-10"></div></span>
   <tkl-todo-list [todos]="todosDone"></tkl-todo-list>
 </ng-container>
 
-<div *ngIf="listType === ListType.Tag" class="flex flex-column flex-grow overflow-auto">
-  <div *ngFor="let tag of TodoTag | enumToArray">
-    <ng-container *ngIf="!!todosByTag && todosByTag[ TodoTag[ tag ] ]?.length > 0">
-      <div class="flex justify-content-center tag-header" (click)="toggleTagTodo(TodoTag[ tag ])">
-        <h2 [style.color]="TodoTagColor[ tag ]">{{ TodoTagTitle[ TodoTag[ tag ] ] }}</h2>
-        <div class="gg-chevron-down" *ngIf="!tagOpen[ TodoTag[ tag ] ]"></div>
-        <div class="gg-chevron-up" *ngIf="tagOpen[ TodoTag[ tag ] ]"></div>
+<div *ngIf="listType === ListType.Tag" class="flex flex-column flex-grow overflow-auto p-b-70">
+  <div *ngFor="let tag of tags">
+    <ng-container *ngIf="!!todosByTag && todosByTag[ tag.id ]?.length > 0">
+      <div class="flex justify-content-center tag-header" (click)="toggleTagTodo(tag)">
+        <h2 [style.color]="tag.color">{{ tag.name }}</h2>
+        <div class="gg-chevron-down" *ngIf="!tagOpen[ tag.id ]"></div>
+        <div class="gg-chevron-up" *ngIf="tagOpen[ tag.id ]"></div>
       </div>
-      <tkl-todo-list *ngIf="tagOpen[ tag ]" [todos]="todosByTag[ TodoTag[ tag ] ]" [noMargin]="true" group="todo-tag"></tkl-todo-list>
+      <tkl-todo-list *ngIf="tagOpen[ tag.id ]" [todos]="todosByTag[ tag.id ]" [noMargin]="true" group="todo-tag"></tkl-todo-list>
     </ng-container>
   </div>
 </div>

@@ -19,10 +19,10 @@
   </div>
   <div class="todo-container" *ngIf="activeOption === 'tag'">
     <div class="flex flex-column w-100">
-      <tkl-tag *ngFor="let tag of Tag | enumToArray"
+      <tkl-tag *ngFor="let tag of tags"
                [tag]="tag"
-               [active]="Tag[ tag ] === todo.tag"
-               (click)="setActiveTag(Tag[ tag ])"></tkl-tag>
+               [active]="tag.id === todo.tag"
+               (click)="setActiveTag(tag)"></tkl-tag>
     </div>
   </div>
   <div class="todo-container" *ngIf="activeOption === 'date'">

@@ -73,6 +73,5 @@ export class CalendarComponent implements OnInit {
 
   private getHeightForMonth(): void {
     this.height = (this.calendar[ this.slide ].dayColumns[ 0 ].dates.length + 1) * 30 + 10;
-    console.log(this.height);
   }
 }

@@ -1,10 +1,10 @@
 <div class="flex align-items-center tag-container"
-     [style.background]="active ? TagColor[ tag ] : 'none'">
+     [style.background]="active ? tag.color : 'none'">
   <div class="icon-container">
-    <div class="gg-tag" [style.color]="active ? 'white' : TagColor[ tag ]"></div>
+    <div class="gg-tag" [style.color]="active ? 'white' : tag?.color"></div>
   </div>
   <div class="task" *ngIf="tag">
-    {{ TagTitle[ tag ] }}
+    {{ tag.name }}
   </div>
   <div class="not-selected" *ngIf="!tag">
     Select Tag...

@@ -1,0 +1,58 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  .control {
+    display: flex;
+    align-items: center;
+    color: #D5E974;
+    flex: 0 0 80px;
+  }
+
+  .add-tag {
+    color: white;
+
+    .task {
+      display: flex;
+      width: 100%;
+      color: #fff;
+      flex: 1 1 0;
+      margin-bottom: 5px;
+
+      label {
+        flex: 0 0 100px;
+      }
+
+      input[type=text] {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        outline: none;
+      }
+
+      input {
+        width: 100%;
+        font-family: 'Lato', sans-serif;
+        font-size: 16px;
+        background: none;
+        border: 1px solid #D5E974;
+        color: white;
+
+        &:focus {
+          outline-width: 0;
+        }
+      }
+
+      .error {
+        color: red;
+      }
+    }
+
+    .gg-math-plus {
+      &.disabled {
+        color: #636466;
+      }
+    }
+  }
+}

@@ -4,6 +4,7 @@ import { TodosComponent } from './todo/todos/todos.component';
 import { TodoDetailsComponent } from './todo/todo-details/todo-details.component';
 import { LoginComponent } from './authentication/login/login.component';
 import { canActivate, redirectLoggedInTo, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
+import { SettingsComponent } from './todo/settings/settings.component';
 
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
 const redirectLoggedInToTodos = () => redirectLoggedInTo(['todos']);
@@ -13,6 +14,7 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent, ...canActivate(redirectLoggedInToTodos) },
   {path: 'todos', component: TodosComponent, data: {animation: 'Todos'}, ...canActivate(redirectUnauthorizedToLogin) },
   {path: 'todo/:id', component: TodoDetailsComponent, data: {animation: 'Todo'}, ...canActivate(redirectUnauthorizedToLogin) },
+  {path: 'settings', component: SettingsComponent, data: {animation: 'Todo'}, ...canActivate(redirectUnauthorizedToLogin) },
 ];
 
 @NgModule({

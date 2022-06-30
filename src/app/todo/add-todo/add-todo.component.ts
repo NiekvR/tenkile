@@ -1,32 +1,38 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Todo } from '../../models/todo.model';
 import { TodoService } from '../todo.service';
-import { TodoTag } from '../../models/enums/todo-tag.enum';
 import { USERS } from '../../../assets/users/users';
 import { User } from '../../models/user.model';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { take } from 'rxjs/operators';
-import { combineLatest, Observable } from 'rxjs';
+import { take, takeUntil } from 'rxjs/operators';
+import { combineLatest, ReplaySubject } from 'rxjs';
+import { Tag } from '../../models/tag.model';
+import { TagService } from '../tag.service';
 
 @Component({
   selector: 'tkl-add-todo',
   templateUrl: './add-todo.component.html',
   styleUrls: ['./add-todo.component.scss']
 })
-export class AddTodoComponent implements OnInit {
+export class AddTodoComponent implements OnInit, OnDestroy {
   @Input() todo: Todo;
   @Input() update = false;
   @Input() editing = false;
   @Input() activeOption: 'text' | 'tag' | 'date' | 'note' | 'user' = 'text';
   @Output() editingChange = new EventEmitter<boolean>();
 
-  public Tag = TodoTag;
+  public tags: Tag[];
+
   public USERS = USERS;
   private focus = true;
 
-  constructor(private el: ElementRef, private todoService: TodoService, public auth: AngularFireAuth) { }
+  private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
+
+  constructor(private el: ElementRef, private todoService: TodoService, public auth: AngularFireAuth,
+              private tagService: TagService) { }
 
   ngOnInit(): void {
+    this.getTags();
     if (!this.todo) {
       combineLatest([ this.auth.user.pipe(take(1)), this.todoService.getNextOrder() ])
         .subscribe(([user, order ]) => this.todo = {
@@ -37,6 +43,11 @@ export class AddTodoComponent implements OnInit {
           order
         });
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
   }
 
   public toggleEditing(): void {
@@ -65,11 +76,11 @@ export class AddTodoComponent implements OnInit {
     this.activeOption = option;
   }
 
-  public setActiveTag(tag: TodoTag): void {
-    if (this.todo.tag === tag) {
+  public setActiveTag(tag: Tag): void {
+    if (this.todo.tag === tag.id) {
       this.todo.tag = null;
     } else {
-      this.todo.tag = tag;
+      this.todo.tag = tag.id;
     }
   }
 
@@ -83,6 +94,12 @@ export class AddTodoComponent implements OnInit {
 
   public onFocus(): void {
     this.focusAndOpenKeyboard(this.el.nativeElement.querySelector('input'));
+  }
+
+  private getTags(): void {
+    this.tagService.getTags$()
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(tags => this.tags = tags);
   }
 
   private clearAddTodo(): void {

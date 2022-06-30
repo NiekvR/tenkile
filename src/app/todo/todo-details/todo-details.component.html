@@ -6,7 +6,7 @@
 </tkl-header>
 <div class="flex flex-column m-15" *ngIf="todo">
   <tkl-todo [todo]="todo" [highlighted]="true" (click)="updateTodo('text')"></tkl-todo>
-  <tkl-tag [tag]="todo.tag" (click)="updateTodo('tag')"></tkl-tag>
+  <tkl-tag [tag]="tag" (click)="updateTodo('tag')"></tkl-tag>
   <tkl-user [user]="USERS[ todo.user ]" (click)="updateTodo('user')"></tkl-user>
   <div class="date flex align-items-center cursor-pointer" (click)="updateTodo('date')">
     <div class="icon-container">

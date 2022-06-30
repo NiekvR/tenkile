@@ -1,26 +1,15 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { TodoTag } from '../../models/enums/todo-tag.enum';
-import { TodoTagColor } from '../../models/enums/todo-tag-color.enum';
-import { TodoTagTitle } from '../../models/enums/todo-tag-title.enum';
+import { Tag } from 'src/app/models/tag.model';
 
 @Component({
   selector: 'tkl-tag',
   templateUrl: './tag.component.html',
   styleUrls: ['./tag.component.scss']
 })
-export class TagComponent implements OnInit {
+export class TagComponent {
 
-  @Input() tag: TodoTag;
+  @Input() tag: Tag;
   @Input() active = false;
 
-  public Tag = TodoTag;
-  public TagColor = TodoTagColor;
-  public TagTitle = TodoTagTitle
-
   constructor() { }
-
-  ngOnInit(): void {
-
-  }
-
 }

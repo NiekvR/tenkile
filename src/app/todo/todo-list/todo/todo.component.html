@@ -11,7 +11,7 @@
         <div class="gg-calendar-two" *ngIf="!!todo.plannedDate"></div>
       </div>
       <div class="icon-container" (click)="openTodo()">
-        <div class="gg-tag" *ngIf="!!todo.tag" [style.color]="TodoTagColor[ todo.tag ]"></div>
+        <div class="gg-tag" *ngIf="!!todo.tag && tag" [style.color]="tag.color"></div>
       </div>
       <div class="icon-container" (click)="openTodo()">
         <div class="gg-notes" *ngIf="!!todo.notes"></div>

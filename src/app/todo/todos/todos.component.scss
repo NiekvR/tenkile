@@ -13,6 +13,22 @@
     }
   }
 
+  .edit {
+    position: absolute;
+    top: 59px;
+    right: 20px;
+    font-size: 8px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+
+    span {
+      margin-top: 3px;
+    }
+  }
+
   .calendar-container {
     display: flex;
     flex-direction: column;
@@ -20,5 +36,11 @@
     border-radius: 5px;
     align-items: center;
     margin: 15px;
+  }
+
+  .delete {
+    color: #C21807;
+    display: flex;
+    justify-content: center;
   }
 }

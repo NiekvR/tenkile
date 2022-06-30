@@ -1,0 +1,33 @@
+<tkl-header [title]="'Settings'">
+  <div class="control cursor-pointer" control="left" (click)="backTodos()">
+    <div class="gg-chevron-left"></div>
+    Todo's
+  </div>
+</tkl-header>
+<div class="flex flex-column m-15 flex-grow">
+  <h2>Tags</h2>
+  <div class="flex flex-column align-items-center add-tag">
+    <div *ngFor="let tag of tags"
+         class="cursor-pointer flex space-between w-100 p-l-10 p-r-10 p-b-5 p-t-5"
+         [style.color]="tag.color">
+      <span (click)="updateTag(tag)">{{ tag.name }}</span>
+      <div class="gg-close-r" (click)="deleteTag(tag)"></div>
+    </div>
+    <ng-container *ngIf="addingTag">
+      <div class="task">
+        <label>Tag name</label>
+        <input [(ngModel)]="newTag.name" [placeholder]="'Tag name'">
+      </div>
+      <div class="task flex-column">
+        <div class="flex">
+          <label>Tag kleur</label>
+          <input [(ngModel)]="newTag.color" [placeholder]="'Tag kleur (hex)'" (blur)="blurHexCheck()">
+        </div>
+        <div class="error text-right" *ngIf="hexError">De kleur moet in hex-format: #AABBCC</div>
+      </div>
+    </ng-container>
+    <div class="gg-math-plus cursor-pointer m-t-10"
+         [class.disabled]="addingTag && (newTag?.name?.length === 0 || newTag?.color?.length === 0)"
+         (click)="addTag()"></div>
+  </div>
+</div>

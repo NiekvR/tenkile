@@ -1,13 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Todo } from '../../models/todo.model';
 import { TodoService } from '../todo.service';
-import { Subscription } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { ReplaySubject, Subscription } from 'rxjs';
+import { map, takeUntil, tap } from 'rxjs/operators';
 import { ListType } from '../../models/enums/list-type.enum';
-import { TodoTag } from '../../models/enums/todo-tag.enum';
-import { TodoTagTitle } from '../../models/enums/todo-tag-title.enum';
-import { TodoTagColor } from '../../models/enums/todo-tag-color.enum';
 import { DateService } from '../../shared/date/date.service';
+import { Router } from '@angular/router';
+import { TagService } from '../tag.service';
+import { Tag } from 'src/app/models/tag.model';
 
 @Component({
   selector: 'tkl-todos',
@@ -28,24 +28,22 @@ export class TodosComponent implements OnInit, OnDestroy {
   public sortAscending = true;
   public listType: ListType;
   public ListType = ListType;
-  public TodoTag = TodoTag;
-  public TodoTagTitle = TodoTagTitle;
-  public TodoTagColor = TodoTagColor;
-  public tagOpen = {
-    [TodoTag.FutureForNature]: true,
-    [TodoTag.NIOO]: true,
-    [TodoTag.APP]: true,
-    [TodoTag.Family]: true
-  };
+
+  public tags: Tag[];
+  public tagOpen = {};
 
   public selectedDate = new Date();
 
   private todoSubscription: Subscription;
   private subscriptions: Subscription[] = [];
 
-  constructor(private todoService: TodoService, private dateService: DateService) { }
+  private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
+
+  constructor(private todoService: TodoService, private dateService: DateService, private router: Router,
+              private tagService: TagService) { }
 
   ngOnInit(): void {
+    this.getTags();
     this.getListType();
     this.getSelectedDate();
   }
@@ -59,6 +57,9 @@ export class TodosComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(subscription => {
       subscription.unsubscribe();
     });
+
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
   }
 
   public getListType(): void {
@@ -79,7 +80,7 @@ export class TodosComponent implements OnInit, OnDestroy {
 
   public setSelectedDate(date: Date): void {
     this.todoService.setCurrentDate(date);
-    this.setListType(ListType.Planned)
+    this.setListType(ListType.Planned);
   }
 
   public setListType(listType: ListType): void {
@@ -100,8 +101,16 @@ export class TodosComponent implements OnInit, OnDestroy {
     }
   }
 
-  public toggleTagTodo(tag: TodoTag): void {
-    this.tagOpen[ tag ] = !this.tagOpen[ tag ];
+  public toggleTagTodo(tag: Tag): void {
+    this.tagOpen[ tag.id ] = !this.tagOpen[ tag.id ];
+  }
+
+  public openSettings(): void {
+    this.router.navigate([ './settings' ]);
+  }
+
+  public deleteALlDoneTodos(todos: Todo[]): void {
+    this.todoService.removeTodos(todos).subscribe();
   }
 
   private setTodosByDateAdded(): void {
@@ -120,16 +129,19 @@ export class TodosComponent implements OnInit, OnDestroy {
 
   private setTodosDone(): void {
     this.todoSubscription = this.todoService.getDoneTodos()
+      .pipe(takeUntil(this.destroyed$))
       .subscribe(todosDone => this.todosDone = todosDone);
   }
 
   private setTodosByTag(): void {
     this.todoSubscription = this.todoService.getTodosByTag()
+      .pipe(takeUntil(this.destroyed$))
       .subscribe(todosByTag => this.todosByTag = todosByTag);
   }
 
   private setTodosByUser(): void {
     this.todoSubscription = this.todoService.getTodosByUser()
+      .pipe(takeUntil(this.destroyed$))
       .subscribe(todosByUser => this.todosByUser = todosByUser);
   }
 
@@ -142,5 +154,14 @@ export class TodosComponent implements OnInit, OnDestroy {
     return dates
       .filter((date, index) =>
         dates.findIndex(selfValue => this.dateService.isSameDay(date, selfValue)) === index);
+  }
+
+  private getTags(): void {
+    this.tagService.getTags$()
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(tags => {
+        this.tags = tags;
+        tags.forEach(tag => this.tagOpen[ tag.id ] = true);
+      });
   }
 }

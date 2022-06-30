@@ -1,9 +1,7 @@
-import { TodoTag } from './enums/todo-tag.enum';
-
 export interface Todo {
   id?: string;
   task: string;
-  tag?: TodoTag;
+  tag?: string;
   date: Date;
   notes?: string;
   done: boolean;

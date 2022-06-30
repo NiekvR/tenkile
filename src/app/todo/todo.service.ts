@@ -1,11 +1,13 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Todo } from '../models/todo.model';
-import { BehaviorSubject, from, Observable } from 'rxjs';
-import { filter, map, switchMap, take } from 'rxjs/operators';
-import { TodoTag } from '../models/enums/todo-tag.enum';
+import { BehaviorSubject, from, Observable, ReplaySubject } from 'rxjs';
+import { filter, map, switchMap, take, takeUntil } from 'rxjs/operators';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { ListType } from '../models/enums/list-type.enum';
+import { TagService } from './tag.service';
+import { Tag } from '../models/tag.model';
+import { TodoTag } from '../models/enums/todo-tag.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +21,13 @@ export class TodoService implements OnDestroy {
 
   public nextOrder = new BehaviorSubject<number>(0);
 
-  constructor(private db: AngularFirestore, private auth: AngularFireAuth) {
+  private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
+
+  private tags: Tag[];
+  private tagEnum: TodoTag;
+
+  constructor(private db: AngularFirestore, private auth: AngularFireAuth, private tagService: TagService) {
+    this.getTags();
     this.collection = this.db.collection<Todo>('todo');
     this.initTodos();
     this.updateNextOrder();
@@ -32,6 +40,8 @@ export class TodoService implements OnDestroy {
     this.state$ = null;
     this.date$.complete();
     this.date$ = null;
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
   }
 
   public initTodos(): void {
@@ -124,6 +134,17 @@ export class TodoService implements OnDestroy {
     this.collection.doc(todo.id).delete();
   }
 
+  public removeTodos(todos: Todo[]): Observable<void> {
+    const batch = this.db.firestore.batch();
+
+    todos.forEach(todo => {
+      const delTodo = this.db.firestore.collection('todo').doc(todo.id);
+      batch.delete(delTodo);
+    });
+
+    return from(batch.commit());
+  }
+
   private add(item: Todo): Observable<Todo> {
     delete (item as any).id;
     return from(this.collection.add(item)).pipe(switchMap(document => from(document.get()).pipe(
@@ -141,12 +162,9 @@ export class TodoService implements OnDestroy {
   }
 
   private sortTodosOnTags(todos: Todo[]): { [ tag: string ]: Todo[] } {
-    return {
-      [TodoTag.FutureForNature]: todos.filter(todo => todo.tag === TodoTag.FutureForNature),
-      [TodoTag.NIOO]: todos.filter(todo => todo.tag === TodoTag.NIOO),
-      [TodoTag.APP]: todos.filter(todo => todo.tag === TodoTag.APP),
-      [TodoTag.Family]: todos.filter(todo => todo.tag === TodoTag.Family)
-    };
+    const todosByTag = {};
+    this.tags.forEach(tag => todosByTag[ tag.id ] = todos.filter(todo => todo.tag === tag.id));
+    return todosByTag;
   }
 
   private convertItem(item: any): Todo {
@@ -173,5 +191,11 @@ export class TodoService implements OnDestroy {
     this.getTodos()
       .pipe(map(todos => todos[ 0 ].order))
       .subscribe(highestOrder => this.nextOrder.next(highestOrder + 1));
+  }
+
+  private getTags(): void {
+    this.tagService.getTags$()
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(tags => this.tags = tags);
   }
 }
